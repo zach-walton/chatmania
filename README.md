@@ -74,3 +74,7 @@ ____________(ddrright)
 ```
 
 ![Max 300](hottest_moves.png?raw=true)
+
+### hipchat logger
+
+This uses the hiplogging module from https://github.com/invernizzi/hiplogging
