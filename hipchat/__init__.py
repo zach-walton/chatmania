@@ -15,7 +15,7 @@ class Hip(object):
 
         self.api_root = "https://hipchat.com/v2/"
         self.api_root = api_root and api_root or self.api_root
-        self.auth_key = api_key
+        self.auth_keys = api_key
 
     def post_notification_to_room(self, room_id_or_name, message, color='green', notify=False, message_format='text'):
         "Send a notification to a HipChat room."
@@ -46,7 +46,7 @@ class Hip(object):
         else:
             req.get_method = lambda: 'GET'
         req.add_header('Content-Type', 'application/json')
-        req.add_header('Authorization', 'Bearer ' + self.auth_key)
+        req.add_header('Authorization', 'Bearer ' + self.auth_keys[0])
 
         try:
             f = urllib2.urlopen(req)
@@ -54,7 +54,14 @@ class Hip(object):
             f.close()
             return response
         except HTTPError, e:
-            self._error_handler(e)
+            # cycle to next API key
+            self.auth_keys = self.auth_keys[1:] + self.auth_keys[:1]
+            print "Cycled to next API key"
+
+            if not self.auth_keys:
+                self._error_handler(e)
+            
+            self._make_call(*args, **kwargs)
 
     def _error_handler(self, e):
         """

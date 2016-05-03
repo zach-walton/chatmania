@@ -8,8 +8,10 @@ Supports speed mods, song speed multipliers, and renders arrow spacing correctly
 
 ### ~/.hipchat.yml example
 
+Optionally set multiple comma-delimited API keys to cycle through them and get around HipChat rate limiting
+
 ```
-api_key: [redacted]
+api_keys: [redacted], [redacted2], [redacted3], ...
 room: show me your hottest moves
 url: https://hipchat.com/v2/
 ```

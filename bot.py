@@ -118,7 +118,7 @@ class Logger(object):
         a HipChat logging handler.
         """
         with open(os.path.expanduser(self.hipchat_creds_file)) as fh:
-            tokens = ('api_key', 'room', 'url')
+            tokens = ('api_keys', 'room', 'url')
             for line in fh:
                 try:
                     k = line.split(':')[0]
@@ -130,13 +130,15 @@ class Logger(object):
                     exec('{0} = "{1}"'.format(k, v))
 
             try:
-                api_key, room, url
+                api_keys, room, url
             except NameError:
-                raise ValueError("Need to set a value for :api_key, :room, "
+                raise ValueError("Need to set a value for :api_keys, :room, "
                                  "and :url in {0}".format(
                                      self.hipchat_creds_file))
 
-        return HipChatHandler(api_key, room, url)
+        api_keys = api_keys.replace(' ', '').split(',')
+
+        return HipChatHandler(api_keys, room, url)
 
     @property
     def logger(self):

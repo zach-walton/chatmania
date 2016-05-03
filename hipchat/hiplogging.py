@@ -39,9 +39,9 @@ class HipChat(object):
 
 class HipChatHandler(logging.Handler):
 
-    def __init__(self, admin_token, room, url='https://hipchat.com/v2'):
+    def __init__(self, admin_tokens, room, url='https://hipchat.com/v2'):
         logging.Handler.__init__(self)
-        self.api = HipChat(admin_token, room, url)
+        self.api = HipChat(admin_tokens, room, url)
 
     def emit(self, record):
         if hasattr(record, "color"):
