@@ -5,6 +5,9 @@ Contains HipChat client.
 import json, urllib, urllib2, base64, os
 from urllib2 import HTTPError
 
+TOO_MANY_REQUESTS = 429
+
+
 class Hip(object):
     """
     HipChat REST API wrapper.
@@ -58,7 +61,7 @@ class Hip(object):
             self.auth_keys = self.auth_keys[1:] + self.auth_keys[:1]
             print "Cycled to next API key"
 
-            if not self.auth_keys:
+            if not self.auth_keys or e.code != TOO_MANY_REQUESTS:
                 self._error_handler(e)
             
             self._make_call(*args, **kwargs)
